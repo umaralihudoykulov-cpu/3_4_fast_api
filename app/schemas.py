@@ -38,3 +38,30 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True  # ORM → schema conversion
+
+# ─── TOKEN SCHEMAS ────────────────────────────
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id: Optional[str] = None
+
+
+class OwnerInfo(BaseModel):
+    id: int
+    username: str
+    email: EmailStr
+
+    class Config:
+        from_attributes = True
+
+class PostResponse(PostBase):
+    id: int
+    created_at: datetime
+    owner_id: Optional[int] = None
+    owner: Optional[OwnerInfo] = None   # ← YANGI
+
+    class Config:
+        from_attributes = True
