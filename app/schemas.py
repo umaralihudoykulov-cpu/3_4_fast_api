@@ -4,10 +4,31 @@ from datetime import datetime
 
 # ─── POST SCHEMAS ─────────────────────────────
 
+
+class OwnerInfo(BaseModel):
+    id: int
+    username: str
+    email: EmailStr
+
+    class Config:
+        from_attributes = True
+
+
+
+
 class PostBase(BaseModel):
     title: str              # post title
-    content: str            # post content
+    body: str            # post content
     published: bool = True  # default = True
+    rating: Optional[int] = None
+
+
+class PostResponse(PostBase):
+    id: int
+    created_at: datetime
+    owner_id: Optional[int] = None
+    owner: Optional[OwnerInfo] = None
+
 
 class PostCreate(PostBase):
     pass  # used when creating a post (same fields as base)
@@ -15,10 +36,7 @@ class PostCreate(PostBase):
 class PostUpdate(PostBase):
     pass  # used when updating a post (same fields)
 
-class PostResponse(PostBase):
-    id: int                 # comes from DB
-    created_at: datetime    # timestamp from DB
-    owner_id: Optional[int] = None  # may be None
+
 
     class Config:
         from_attributes = True  # allows reading from ORM (DB model)
@@ -65,3 +83,4 @@ class PostResponse(PostBase):
 
     class Config:
         from_attributes = True
+
